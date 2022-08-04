@@ -1,0 +1,33 @@
+name: build-and-test
+
+on:
+  pull_request:
+    branches: ['dev', 'master']
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: build
+        run: pnpm run build
+
+      - name: test
+        run: pnpm run test
