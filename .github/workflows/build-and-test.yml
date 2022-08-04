@@ -1,9 +1,11 @@
+name: build-and-test
+
 on:
   pull_request:
     branches: ['dev', 'master']
 
 jobs:
-  cache-and-install:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
