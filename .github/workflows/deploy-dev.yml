@@ -52,3 +52,13 @@ jobs:
           push: true
           platforms: linux/amd64, linux/arm64 #, linux/386, linux/arm/v6, linux/arm/v7, linux/ppc64le, linux/s390x
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/school-book-storage-frontend:dev
+
+  redeploy:
+    name: redeploy on portainer
+    needs: docker-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: call portainer webhook
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.PORTAINER_DEV_WEBHOOK_URL }}
