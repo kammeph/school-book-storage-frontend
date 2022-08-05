@@ -1,0 +1,19 @@
+# Node
+/node_modules
+/dist
+
+# GitHub
+/.github
+.gitignore
+
+# Unit tests
+*.test.tsx
+*/__test__
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Docs
+*.md
