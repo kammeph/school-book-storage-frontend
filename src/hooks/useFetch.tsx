@@ -5,6 +5,7 @@ export interface HttpError {
   status?: number;
 }
 
+console.log('base url - vite', import.meta.env.VITE_API_BASE_URL);
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const HttpMethods = {
@@ -16,7 +17,6 @@ const useFetch = () => {
   const [loading, setLoading] = useState(false);
   const [controller, setController] = useState<AbortController>();
 
-  // async function fetchData<T extends any>(url: string, init?: RequestInit) {
   const fetchData = async <T extends {}>(url: string, init?: RequestInit) => {
     setLoading(true);
     setController(new AbortController());
