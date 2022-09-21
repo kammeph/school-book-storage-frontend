@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useFetch, { HttpMethods } from '../hooks/useFetch';
 import Button from '../components/Button';
 import H1 from '../components/Headers';
 import Input from '../components/Input';
 import Card from '../components/Card';
+import useAuthApi from '../api/auth';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState('');
   const userRef = useRef<HTMLInputElement>(null);
-  const [fetchData] = useFetch();
+  const { register } = useAuthApi();
   const navigate = useNavigate();
 
   const formInvalid = useCallback(() => {
@@ -20,16 +20,8 @@ const Register = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const [response, error] = await fetchData('/auth/register', {
-      body: JSON.stringify({
-        aggregateId: 'users',
-        name: username,
-        password: password,
-        locale: 'EN'
-      }),
-      method: HttpMethods.POST
-    });
-    if (!error) {
+    const response = await register({ username, password });
+    if (!response.error) {
       navigate('/login');
     }
   };
@@ -39,7 +31,7 @@ const Register = () => {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col justify-center items-center h-full">
       <Card className="max-w-xs">
         <H1 className="text-center">Register</H1>
         <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap text-left w-full">
@@ -87,7 +79,7 @@ const Register = () => {
           Login
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 
