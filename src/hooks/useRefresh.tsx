@@ -1,22 +1,21 @@
 import useAuth from './useAuth';
-import useFetch, { HttpMethods } from './useFetch';
+import { HttpMethods } from './useFetch';
 
-interface RefreshResponse {
-  accessToken?: string;
-  error?: string;
-}
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const useRefresh = () => {
+const useRefreshAccessToken = () => {
   const { setAuth } = useAuth();
-  const [fetchData] = useFetch();
   const refresh = async () => {
-    const [response, error] = await fetchData<RefreshResponse>('/auth/refresh', { method: HttpMethods.GET });
-    if (!error && !response.error) {
-      setAuth({ accessToken: response.accessToken });
+    const response = await fetch(`${BASE_URL}/auth/refresh`, { method: HttpMethods.GET, credentials: 'include' });
+    let accessToken = '';
+    if (response.ok) {
+      const body = await response.json();
+      accessToken = body.accessToken;
     }
-    return [response, error] as const;
+    setAuth({ accessToken });
+    return accessToken;
   };
   return refresh;
 };
 
-export default useRefresh;
+export default useRefreshAccessToken;

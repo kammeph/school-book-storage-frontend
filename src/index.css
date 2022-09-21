@@ -11,8 +11,6 @@
 #root {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 0;
   height: 100vh;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;

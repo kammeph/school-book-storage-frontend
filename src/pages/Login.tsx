@@ -1,41 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useFetch, { HttpMethods } from '../hooks/useFetch';
 import Button from '../components/Button';
 import H1 from '../components/Headers';
 import Input from '../components/Input';
 import useAuth from '../hooks/useAuth';
 import Card from '../components/Card';
-
-interface LoginResponse {
-  accessToken?: string;
-  error?: string;
-}
+import useAuthApi from '../api/auth';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const userRef = useRef<HTMLInputElement>(null);
-  const [fetchData] = useFetch();
+  const { login } = useAuthApi();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as any)?.from?.pathname || '/';
+  const from = (location.state as any)?.from?.pathname || '/schools';
   const formInvalid = useCallback(() => {
     return !username || !password;
   }, [username, password]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const [response, error] = await fetchData<LoginResponse>('/auth/login', {
-      body: JSON.stringify({
-        aggregateId: 'users',
-        name: username,
-        password: password
-      }),
-      method: HttpMethods.POST
-    });
-    if (!error && !response.error) {
+    const response = await login({ username, password });
+    if (!response.error) {
       setAuth({ accessToken: response.accessToken });
       navigate(from, { replace: true });
     }
@@ -46,7 +34,7 @@ function Login() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col justify-center items-center h-full">
       <Card className="max-w-xs">
         <H1 className="text-center">Login</H1>
         <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap text-left w-full">
@@ -83,7 +71,7 @@ function Login() {
           Register now
         </Link>{' '}
       </div>
-    </>
+    </div>
   );
 }
 

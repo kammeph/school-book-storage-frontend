@@ -1,40 +1,37 @@
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
-import useFetch from './useFetch';
-import useRefresh from './useRefresh';
+import useRefreshAccessToken from './useRefresh';
+
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useFetchPrivate = () => {
-  const [loading, setLoading] = useState(false);
   const { auth } = useAuth();
-  const [fetchData] = useFetch();
-  const refresh = useRefresh();
+  const refresh = useRefreshAccessToken();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchPrivate = async <T extends {}>(url: string, init?: RequestInit) => {
-    setLoading(true);
-    let [response, error] = await fetchData<T>(url, {
+  const fetchPrivate = async (url: string, init?: RequestInit) => {
+    const response = await fetch(`${BASE_URL}${url}`, {
       ...init,
+      credentials: 'include',
       headers: { ...init?.headers, Authorization: `Bearer ${auth.accessToken}` }
     });
-    if (error && error.status == 401) {
-      const [response, refreshError] = await refresh();
-      error = refreshError;
-      if (!refreshError && !response.error) {
-        return await fetchData<T>(url, {
-          ...init,
-          headers: { ...init?.headers, Authorization: `Bearer ${response.accessToken}` }
-        });
-      } else if (refreshError?.status === 401) {
+    if (response.ok) return await response.json();
+    if (response.status === 401) {
+      const newAccessToken = await refresh();
+      if (!newAccessToken) {
         navigate('/login', { state: { from: location }, replace: true });
+        return { error: 'Unauthorized' };
       }
+      const newResponse = await fetch(`${BASE_URL}${url}`, {
+        ...init,
+        credentials: 'include',
+        headers: { ...init?.headers, Authorization: `Bearer ${newAccessToken}` }
+      });
+      return await newResponse.json();
     }
-    setLoading(false);
-    return [response as T, error] as const;
   };
-
-  return [fetchPrivate, loading] as const;
+  return fetchPrivate;
 };
 
 export default useFetchPrivate;
