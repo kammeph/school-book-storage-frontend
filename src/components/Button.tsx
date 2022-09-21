@@ -20,4 +20,20 @@ const Button = (props: ButtonProps) => {
   );
 };
 
+export const FabButton = (props: ButtonProps) => {
+  const { children, className, ...rest } = props;
+  return (
+    <button
+      className={twMerge(
+        `shadow enabled:hover:shadow-lg bg-indigo-600 text-white rounded-full w-10 h-10 hover:bg-indigo-800 disabled:bg-indigo-300 ${
+          className ?? ''
+        }`
+      )}
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+};
+
 export default Button;
