@@ -1,32 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-import H1 from '../components/Headers';
-import Input from '../components/Input';
-import useAuth from '../hooks/useAuth';
-import Card from '../components/Card';
 import useAuthApi from '../api/auth';
+import { button, card, headers, input, link } from '../styles';
+import { useMutation } from '@tanstack/react-query';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const userRef = useRef<HTMLInputElement>(null);
   const { login } = useAuthApi();
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as any)?.from?.pathname || '/schools';
+  const from = (location.state as any)?.from?.pathname || '/books';
   const formInvalid = useCallback(() => {
     return !username || !password;
   }, [username, password]);
+  const loginMutation = useMutation(['accessToken'], login, {
+    onSuccess: data => {
+      if (!data.error) navigate(from, { replace: true });
+    }
+  });
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const response = await login({ username, password });
-    if (!response.error) {
-      setAuth({ accessToken: response.accessToken });
-      navigate(from, { replace: true });
-    }
+    loginMutation.mutate({ username, password });
   };
 
   useEffect(() => {
@@ -35,13 +32,14 @@ function Login() {
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
-      <Card className="max-w-xs">
-        <H1 className="text-center">Login</H1>
+      <div className={`${card} max-w-xs`}>
+        <h1 className={`${headers.h1} text-center`}>Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap text-left w-full">
           <label className="ml-2" htmlFor="username">
             Username
           </label>
-          <Input
+          <input
+            className={input.basic}
             ref={userRef}
             type="text"
             name="username"
@@ -54,7 +52,8 @@ function Login() {
           <label className="ml-2" htmlFor="password">
             Password
           </label>
-          <Input
+          <input
+            className={input.basic}
             type="password"
             name="password"
             placeholder="enter password here"
@@ -62,12 +61,14 @@ function Login() {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <Button disabled={formInvalid()}>Submit</Button>
+          <button className={button.basic} disabled={formInvalid()}>
+            Submit
+          </button>
         </form>
-      </Card>
+      </div>
       <div>
         <span>You don't have an account?</span>
-        <Link className="m-2 text-indigo-600 hover:underline" to="/register">
+        <Link className={link} to="/register">
           Register now
         </Link>{' '}
       </div>

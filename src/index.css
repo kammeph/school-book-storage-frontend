@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --clr-indigo-600: rgb(79 70 229);
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -25,4 +29,25 @@ body {
 
 h1 {
   font-family: Rubik;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--clr-indigo-600) white;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: white;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--clr-indigo-600);
+  border-radius: 20px;
+  border: 3px solid white;
 }

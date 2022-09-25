@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-import H1 from '../components/Headers';
-import Input from '../components/Input';
-import Card from '../components/Card';
 import useAuthApi from '../api/auth';
+import { button, card, headers, input, link } from '../styles';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -32,13 +29,14 @@ const Register = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
-      <Card className="max-w-xs">
-        <H1 className="text-center">Register</H1>
+      <div className={`${card} max-w-xs`}>
+        <h1 className={`${headers.h1} text-center`}>Register</h1>
         <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap text-left w-full">
           <label className="ml-2" htmlFor="username">
             Username
           </label>
-          <Input
+          <input
+            className={input.basic}
             ref={userRef}
             type="text"
             name="username"
@@ -51,7 +49,8 @@ const Register = () => {
           <label className="ml-2" htmlFor="password">
             Password
           </label>
-          <Input
+          <input
+            className={input.basic}
             type="password"
             name="password"
             placeholder="enter password here"
@@ -62,7 +61,8 @@ const Register = () => {
           <label className="ml-2" htmlFor="passwordMatch">
             Repeat password
           </label>
-          <Input
+          <input
+            className={input.basic}
             type="password"
             name="passwordMatch"
             placeholder="repeat password"
@@ -70,12 +70,14 @@ const Register = () => {
             value={passwordMatch}
             onChange={e => setPasswordMatch(e.target.value)}
           />
-          <Button disabled={formInvalid()}>Submit</Button>
+          <button className={button.basic} disabled={formInvalid()}>
+            Submit
+          </button>
         </form>
-      </Card>
+      </div>
       <div>
         <span>You already have login and password?</span>
-        <Link className="text-right m-2 hover:underline text-indigo-600" to="/login">
+        <Link className={link} to="/login">
           Login
         </Link>
       </div>

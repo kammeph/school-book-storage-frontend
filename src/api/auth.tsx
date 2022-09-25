@@ -14,21 +14,22 @@ const useAuthApi = () => {
   const fetchData = useFetch();
 
   const login = async (credentials: Credentials): Promise<AccessTokenHttpResponse> => {
-    const response = fetchData('/auth/login', { method: HttpMethods.POST, body: JSON.stringify(credentials) });
-    return response;
+    return await fetchData('/auth/login', { method: HttpMethods.POST, body: JSON.stringify(credentials) });
   };
 
   const register = async (credentials: Credentials): Promise<HttpResponse> => {
-    const response = fetchData('/auth/register', { method: HttpMethods.POST, body: JSON.stringify(credentials) });
-    return response;
+    return await fetchData('/auth/register', { method: HttpMethods.POST, body: JSON.stringify(credentials) });
   };
 
   const logout = async (): Promise<HttpResponse> => {
-    const response = fetchData('/auth/logout', { method: HttpMethods.POST });
-    return response;
+    return await fetchData('/auth/logout', { method: HttpMethods.POST });
   };
 
-  return { login, register, logout };
+  const refresh = async (): Promise<AccessTokenHttpResponse> => {
+    return await fetchData('/auth/refresh', { method: HttpMethods.GET, credentials: 'include' });
+  };
+
+  return { login, register, logout, refresh };
 };
 
 export default useAuthApi;
