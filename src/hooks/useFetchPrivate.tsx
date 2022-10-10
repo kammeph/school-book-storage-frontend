@@ -1,14 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuthApi from '../api/auth';
+import useAuthApi, { ACCESS_TOKEN } from '../api/auth';
 
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useFetchPrivate = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { refresh } = useAuthApi();
-  const query = useQuery(['accessToken'], refresh);
+  const { refresh, logout } = useAuthApi();
+  const query = useQuery([ACCESS_TOKEN], refresh);
+  const { mutate } = useMutation(logout, {
+    onSuccess: () => {
+      queryClient.clear();
+      navigate('/login', { state: { from: location }, replace: true });
+    }
+  });
+  const queryClient = useQueryClient();
 
   const fetchPrivate = async (url: string, init?: RequestInit) => {
     const response = await fetch(`${BASE_URL}${url}`, {
@@ -16,21 +23,18 @@ const useFetchPrivate = () => {
       credentials: 'include',
       headers: { ...init?.headers, Authorization: `Bearer ${query.data?.accessToken}` }
     });
-    if (response.ok) return await response.json();
-    if (response.status === 401) {
-      // const newAccessToken = await refresh();
-      const refreshResponse = await query.refetch();
-      if (!refreshResponse.data?.accessToken) {
-        navigate('/login', { state: { from: location }, replace: true });
-        return { error: 'Unauthorized' };
-      }
-      const newResponse = await fetch(`${BASE_URL}${url}`, {
-        ...init,
-        credentials: 'include',
-        headers: { ...init?.headers, Authorization: `Bearer ${refreshResponse.data.accessToken}` }
-      });
-      return await newResponse.json();
+    if (response.ok || response.status !== 401) return await response.json();
+    const refreshResponse = await query.refetch();
+    if (!refreshResponse.data?.accessToken) {
+      await mutate();
+      return { error: 'Unauthorized' };
     }
+    const newResponse = await fetch(`${BASE_URL}${url}`, {
+      ...init,
+      credentials: 'include',
+      headers: { ...init?.headers, Authorization: `Bearer ${refreshResponse.data.accessToken}` }
+    });
+    return await newResponse.json();
   };
   return fetchPrivate;
 };
