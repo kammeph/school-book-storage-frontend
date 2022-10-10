@@ -4,6 +4,7 @@ specifiers:
   '@fortawesome/fontawesome-svg-core': ^6.2.0
   '@fortawesome/free-solid-svg-icons': ^6.2.0
   '@fortawesome/react-fontawesome': ^0.2.0
+  '@headlessui/react': ^1.7.3
   '@tanstack/react-query': ^4.3.9
   '@tanstack/react-query-devtools': ^4.6.0
   '@testing-library/jest-dom': ^5.16.4
@@ -30,6 +31,7 @@ dependencies:
   '@fortawesome/fontawesome-svg-core': 6.2.0
   '@fortawesome/free-solid-svg-icons': 6.2.0
   '@fortawesome/react-fontawesome': 0.2.0_6j2wdqxompc6mcokhxkpep2gqu
+  '@headlessui/react': 1.7.3_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query': 4.3.9_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.6.0_epsj7huqxjc5l4xgmicnqhbxle
   react: 18.2.0
@@ -492,6 +494,17 @@ packages:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       prop-types: 15.8.1
       react: 18.2.0
+    dev: false
+
+  /@headlessui/react/1.7.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-LGp06SrGv7BMaIQlTs8s2G06moqkI0cb0b8stgq7KZ3xcHdH3qMP+cRyV7qe5x4XEW/IGY48BW4fLesD6NQLng==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@istanbuljs/load-nyc-config/1.1.0:
