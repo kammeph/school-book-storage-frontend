@@ -17,7 +17,6 @@
   flex-direction: column;
   padding: 0;
   height: 100vh;
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
 }
 
 html,
@@ -25,10 +24,6 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-}
-
-h1 {
-  font-family: Rubik;
 }
 
 /* Works on Firefox */
@@ -50,4 +45,34 @@ h1 {
   background-color: var(--clr-indigo-600);
   border-radius: 20px;
   border: 3px solid white;
+}
+
+@layer components {
+  .input {
+    @apply ring-1 ring-slate-400 rounded-md py-2 pl-3 mb-2 enabled:shadow-md focus:ring-2 focus:ring-indigo-600 focus:outline-none;
+  }
+
+  .btn {
+    @apply bg-indigo-600 text-white font-medium rounded-md py-2 px-4 my-4 enabled:hover:shadow-lg hover:bg-indigo-800 disabled:bg-indigo-300;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-indigo-600 font-medium border-2 border-solid border-indigo-600 rounded-md py-2 px-4 my-4 enabled:hover:shadow-lg hover:text-indigo-800 hover:border-indigo-800 disabled:text-indigo-300 disabled:border-indigo-300;
+  }
+
+  .btn-accent {
+    @apply bg-red-600 text-white font-medium rounded-md py-2 px-4 my-4 enabled:hover:shadow-lg hover:bg-red-700 disabled:bg-red-200;
+  }
+
+  .btn-fab {
+    @apply bg-indigo-600 text-white rounded-full w-10 h-10 enabled:hover:shadow-lg hover:bg-indigo-800 disabled:bg-indigo-300;
+  }
+
+  .card {
+    @apply h-min shadow-md ring-1 ring-slate-300 rounded-lg p-5 w-full bg-white;
+  }
+
+  .h1 {
+    @apply text-3xl font-bold;
+  }
 }
