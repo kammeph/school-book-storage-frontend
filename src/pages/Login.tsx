@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useAuthApi from '../api/auth';
-import { button, card, headers, input, link } from '../styles';
+import useAuthApi, { ACCESS_TOKEN } from '../api/auth';
 import { useMutation } from '@tanstack/react-query';
 
 function Login() {
@@ -15,7 +14,7 @@ function Login() {
   const formInvalid = useCallback(() => {
     return !username || !password;
   }, [username, password]);
-  const loginMutation = useMutation(['accessToken'], login, {
+  const { mutate: loginUser } = useMutation([ACCESS_TOKEN], login, {
     onSuccess: data => {
       if (!data.error) navigate(from, { replace: true });
     }
@@ -23,7 +22,7 @@ function Login() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    loginMutation.mutate({ username, password });
+    loginUser({ username, password });
   };
 
   useEffect(() => {
@@ -31,15 +30,13 @@ function Login() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center h-full">
-      <div className={`${card} max-w-xs`}>
-        <h1 className={`${headers.h1} text-center`}>Login</h1>
+    <div className="flex flex-col justify-center items-center h-full bg-gray-100">
+      <div className="card max-w-xs">
+        <h1 className="h1 text-center">Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap text-left w-full">
-          <label className="ml-2" htmlFor="username">
-            Username
-          </label>
+          <label htmlFor="username">Username</label>
           <input
-            className={input.basic}
+            className="input"
             ref={userRef}
             type="text"
             name="username"
@@ -49,11 +46,9 @@ function Login() {
             value={username}
             onChange={e => setUsername(e.target.value)}
           />
-          <label className="ml-2" htmlFor="password">
-            Password
-          </label>
+          <label htmlFor="password">Password</label>
           <input
-            className={input.basic}
+            className="input"
             type="password"
             name="password"
             placeholder="enter password here"
@@ -61,14 +56,14 @@ function Login() {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <button className={button.basic} disabled={formInvalid()}>
+          <button className="btn" disabled={formInvalid()}>
             Submit
           </button>
         </form>
       </div>
-      <div>
+      <div className="mt-2">
         <span>You don't have an account?</span>
-        <Link className={link} to="/register">
+        <Link className="m-2 text-indigo-600 hover:underline" to="/register">
           Register now
         </Link>{' '}
       </div>
