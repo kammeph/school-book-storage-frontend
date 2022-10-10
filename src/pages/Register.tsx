@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthApi from '../api/auth';
-import { button, card, headers, input, link } from '../styles';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -28,15 +27,13 @@ const Register = () => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center h-full">
-      <div className={`${card} max-w-xs`}>
-        <h1 className={`${headers.h1} text-center`}>Register</h1>
+    <div className="flex flex-col justify-center items-center h-full bg-gray-100">
+      <div className="card max-w-xs">
+        <h1 className="h1 text-center">Register</h1>
         <form onSubmit={handleSubmit} className="flex flex-col flex-nowrap text-left w-full">
-          <label className="ml-2" htmlFor="username">
-            Username
-          </label>
+          <label htmlFor="username">Username</label>
           <input
-            className={input.basic}
+            className="input"
             ref={userRef}
             type="text"
             name="username"
@@ -46,11 +43,9 @@ const Register = () => {
             value={username}
             onChange={e => setUsername(e.target.value)}
           />
-          <label className="ml-2" htmlFor="password">
-            Password
-          </label>
+          <label htmlFor="password">Password</label>
           <input
-            className={input.basic}
+            className="input"
             type="password"
             name="password"
             placeholder="enter password here"
@@ -58,11 +53,9 @@ const Register = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <label className="ml-2" htmlFor="passwordMatch">
-            Repeat password
-          </label>
+          <label htmlFor="passwordMatch">Repeat password</label>
           <input
-            className={input.basic}
+            className="input"
             type="password"
             name="passwordMatch"
             placeholder="repeat password"
@@ -70,14 +63,14 @@ const Register = () => {
             value={passwordMatch}
             onChange={e => setPasswordMatch(e.target.value)}
           />
-          <button className={button.basic} disabled={formInvalid()}>
+          <button className="btn" disabled={formInvalid()}>
             Submit
           </button>
         </form>
       </div>
-      <div>
+      <div className="mt-2">
         <span>You already have login and password?</span>
-        <Link className={link} to="/login">
+        <Link className="m-2 text-indigo-600 hover:underline" to="/login">
           Login
         </Link>
       </div>

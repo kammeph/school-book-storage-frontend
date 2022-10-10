@@ -2,8 +2,10 @@ import { HttpMethods } from '../hooks/useFetch';
 import useFetchPrivate from '../hooks/useFetchPrivate';
 import { HttpResponse } from './types';
 
+export const SCHOOLS = 'schools';
+
 export interface School {
-  id: string;
+  id?: string;
   name: string;
 }
 
