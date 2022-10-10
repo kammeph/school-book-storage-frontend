@@ -1,6 +1,8 @@
 import useFetch, { HttpMethods } from '../hooks/useFetch';
 import { HttpResponse } from './types';
 
+export const ACCESS_TOKEN = 'accessToken';
+
 export interface Credentials {
   username: string;
   password: string;
