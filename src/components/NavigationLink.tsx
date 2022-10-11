@@ -12,7 +12,7 @@ const NavigationLink: React.FC<{ userRoles?: Role[]; allowedRoles: Role[]; text?
 }) => {
   return userRoles?.some(r => allowedRoles.includes(r)) ? (
     <li>
-      <Link className="flex gap-1 items-center font-accent" to={to}>
+      <Link className="flex gap-1 items-center" to={to}>
         <FontAwesomeIcon icon={icon} />
         <b className="invisible w-0 lg:w-auto lg:visible">{text}</b>
       </Link>
