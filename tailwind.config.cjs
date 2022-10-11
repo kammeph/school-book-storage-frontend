@@ -5,9 +5,5 @@ module.exports = {
     extend: {}
   },
   plugins: [],
-  theme: {
-    fontFamily: {
-      accent: ['Rubik']
-    }
-  }
+  theme: {}
 };

@@ -58,8 +58,8 @@ const Schools: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
         {data?.schools?.map(school => (
           <div key={school.id} className="card my-2">
             <div className="flex flex-row items-center justify-between">
-              <p className="font-semibold font-accent">{school.name}</p>
-              <div className="grid grid-flow-col gap-1">
+              <p className="font-semibold">{school.name}</p>
+              <div className="flex gap-1">
                 <button
                   className="btn-fab"
                   onClick={() => {

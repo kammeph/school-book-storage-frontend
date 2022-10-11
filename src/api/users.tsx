@@ -50,7 +50,11 @@ const useUsersApi = () => {
     return await fetchPrivate(`/users/update`, { method: HttpMethods.POST, body: JSON.stringify(user) });
   };
 
-  return { getUsers, getUserById, getMe, updateUser };
+  const deleteUser = async (id?: string): Promise<HttpResponse> => {
+    return await fetchPrivate(`/users/delete?id=${id}`, { method: HttpMethods.POST });
+  };
+
+  return { getUsers, getUserById, getMe, updateUser, deleteUser };
 };
 
 export default useUsersApi;
