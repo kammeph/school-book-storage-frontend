@@ -17,7 +17,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout currentUser={data?.user} />}>
         <Route path="schools" element={<Schools currentUser={data?.user} />} />
-        <Route path="books" element={<Books />} />
+        <Route path="books" element={<Books currentUser={data?.user} />} />
         <Route path="storages" element={<Storages />} />
         <Route path="classes" element={<Classes />} />
         <Route path="users">
