@@ -20,7 +20,19 @@ const PrimitiveSelect: React.FC<{
         } relative w-full bg-white cursor-default rounded-md py-2 pl-3 pr-10 text-left shadow-md focus:outline-none`}
       >
         <span className="block truncate">
-          {`${Array.isArray(value) ? (value?.length > 0 ? value.join(', ') : 'None') : value} ${required ? '*' : ''}`}
+          {`${
+            Array.isArray(value)
+              ? value?.length > 0
+                ? value
+                    .sort((a, b) => {
+                      if (a > b) return 1;
+                      if (a < b) return -1;
+                      return 0;
+                    })
+                    .join(', ')
+                : 'None'
+              : value
+          } ${required ? '*' : ''}`}
         </span>
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <FontAwesomeIcon icon={faAngleDown} className="h-3 w-3 text-gray-400" aria-hidden="true" />
@@ -55,5 +67,4 @@ const PrimitiveSelect: React.FC<{
     </div>
   </Listbox>
 );
-
 export default PrimitiveSelect;
