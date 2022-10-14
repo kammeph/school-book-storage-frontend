@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuthApi, { ACCESS_TOKEN } from '../api/auth';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -11,12 +11,17 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as any)?.from?.pathname || '/books';
+  
   const formInvalid = useCallback(() => {
     return !username || !password;
   }, [username, password]);
-  const { mutate: loginUser } = useMutation([ACCESS_TOKEN], login, {
+  const queryClient = useQueryClient();
+  const { mutate: loginUser } = useMutation(login, {
     onSuccess: data => {
-      if (!data.error) navigate(from, { replace: true });
+      if (!data.error) {
+        queryClient.setQueryData([ACCESS_TOKEN], data);
+        navigate(from, { replace: true });
+      }
     }
   });
 
