@@ -37,7 +37,7 @@ const StorageEditDialog: React.FC<{ isOpen: boolean; initialStorage: Storage; on
     }
   };
   return (
-    <DialogBase isOpen={isOpen} onClose={onClose} title="Enter book data">
+    <DialogBase isOpen={isOpen} onClose={onClose} title="Enter storage data">
       {error && <p className="text-red">{error}</p>}
       <form onSubmit={onSave}>
         <label htmlFor="name">Name</label>
