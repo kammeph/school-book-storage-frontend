@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faBook,
   faBookOpen,
   faUsers,
   faWarehouse,
@@ -30,6 +31,10 @@ const Navigation: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
 
   return (
     <nav className="flex items-center sticky rounded-t-sm w-full h-16 bg-indigo-600 text-white lg:justify-end lg:rounded-b-sm lg:rounded-t-none ">
+      <div className="hidden mr-auto ml-10 lg:flex lg:items-center lg:gap-3">
+        <FontAwesomeIcon icon={faBook} className="w-10 h-10" />
+        <span>Your books in save hands!</span>
+      </div>
       <ul className="flex flex-row justify-around w-full lg:w-4/6">
         <NavigationLink
           userRoles={currentUser?.roles}
