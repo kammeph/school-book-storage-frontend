@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import useUsersApi, { ME } from './api/users';
 import Layout from './components/Layout';
 import Books from './pages/Books';
-import Classes from './pages/Classes';
+import SchoolClasses from './pages/SchoolClasses';
 import Schools from './pages/Schools';
 import Storages from './pages/Storages';
 import UserEdit from './pages/User';
@@ -19,7 +19,7 @@ function App() {
         <Route path="schools" element={<Schools currentUser={data?.user} />} />
         <Route path="books" element={<Books currentUser={data?.user} />} />
         <Route path="storages" element={<Storages currentUser={data?.user} />} />
-        <Route path="classes" element={<Classes />} />
+        <Route path="classes" element={<SchoolClasses currentUser={data?.user} />} />
         <Route path="users">
           <Route index element={<Users />} />
           <Route path=":id" element={<UserEdit currentUser={data?.user} />} />
