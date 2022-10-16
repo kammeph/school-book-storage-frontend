@@ -25,7 +25,7 @@ export interface Book {
 
 export interface BookHttpResponse extends HttpResponse {
   books?: Book[];
-  book: Book;
+  book?: Book;
 }
 
 const useBooksApi = () => {
