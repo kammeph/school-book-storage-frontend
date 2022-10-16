@@ -13,25 +13,39 @@ const SCHOOLS = 'schools';
 const Schools: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState('');
-  const [editSchool, setEditSchool] = useState<School>({ name: '' });
+  const [selectedSchool, setSelectedSchool] = useState<School>();
   const { getSchools, deleteSchool } = useSchoolsApi();
   const queryClient = useQueryClient();
   const { data } = useQuery([SCHOOLS], getSchools);
 
   const deleteSchoolMutation = useMutation(deleteSchool, {
-    onSuccess: () => queryClient.invalidateQueries([SCHOOLS])
+    onSuccess: () => {
+      queryClient.invalidateQueries([SCHOOLS]);
+      setSelectedSchool(undefined);
+    }
   });
+
+  const onOpenEditDialog = (school: School) => {
+    setSelectedSchool(school);
+    setEditDialogOpen(true);
+  };
+
+  const onCloseEditDialog = () => {
+    setSelectedSchool(undefined);
+    setEditDialogOpen(false);
+  };
 
   return (
     <>
-      <SchoolEditDialog isOpen={editDialogOpen} school={editSchool} onClose={() => setEditDialogOpen(false)} />
+      {selectedSchool && (
+        <SchoolEditDialog isOpen={editDialogOpen} school={selectedSchool} onClose={onCloseEditDialog} />
+      )}
       <DeleteDialog
         isOpen={deleteDialogOpen}
         title="Delete school"
         message="Are you sure that you want to delete the selected school?"
         onDelete={() => {
-          deleteSchoolMutation.mutate(deleteId);
+          selectedSchool?.id && deleteSchoolMutation.mutate(selectedSchool.id);
           setDeleteDialogOpen(false);
         }}
         onClose={() => setDeleteDialogOpen(false)}
@@ -43,13 +57,7 @@ const Schools: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
             userRoles={currentUser?.roles}
             allowedRoles={[Role.SysAdmin]}
             element={
-              <button
-                className="btn-fab"
-                onClick={() => {
-                  setEditSchool({ name: '' });
-                  setEditDialogOpen(true);
-                }}
-              >
+              <button className="btn-fab" onClick={() => onOpenEditDialog({ name: '' })}>
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             }
@@ -58,21 +66,15 @@ const Schools: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
         {data?.schools?.map(school => (
           <div key={school.id} className="card my-2">
             <div className="flex flex-row items-center justify-between">
-              <p className="font-semibold">{school.name}</p>
+              <p className="font-semibold text-xl">{school.name}</p>
               <div className="flex gap-1">
-                <button
-                  className="btn-fab"
-                  onClick={() => {
-                    setEditSchool(school);
-                    setEditDialogOpen(true);
-                  }}
-                >
+                <button className="btn-fab" onClick={() => onOpenEditDialog(school)}>
                   <FontAwesomeIcon icon={faPen} />
                 </button>
                 <button
                   className="btn-fab"
                   onClick={() => {
-                    school?.id && setDeleteId(school.id);
+                    setSelectedSchool(school);
                     setDeleteDialogOpen(true);
                   }}
                 >

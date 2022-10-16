@@ -34,7 +34,7 @@ const Users = () => {
         <p>{data?.error}</p>
         {data?.users?.map(user => (
           <div key={user.id} className={`card my-2 flex items-center justify-between`}>
-            <p className="font-semibold">{user?.username}</p>
+            <p className="font-semibold text-xl">{user?.username}</p>
             <div className="flex gap-1">
               <Link to={`${user.id}`}>
                 <button className="btn-fab">

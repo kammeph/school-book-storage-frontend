@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthApi from '../api/auth';
 
@@ -14,7 +14,7 @@ const Register = () => {
     return !username || !password || !passwordMatch || password !== passwordMatch;
   }, [username, password, passwordMatch]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const response = await register({ username, password });
     if (!response.error) {

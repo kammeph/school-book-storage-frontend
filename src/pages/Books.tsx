@@ -16,19 +16,27 @@ const Books: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
   const queryClient = useQueryClient();
   const { data } = useQuery([BOOKS], getBooks);
   const { mutate: deleteSelectedBook } = useMutation(deleteBook, {
-    onSuccess: () => queryClient.invalidateQueries([BOOKS])
+    onSuccess: () => {
+      queryClient.invalidateQueries([BOOKS]);
+      setSelectedBook(undefined);
+    }
   });
+
   const onOpenEditDialog = (book: Book) => {
     setSelectedBook(book);
     setEditDialogOpen(true);
   };
+
   const onCloseEditDialog = () => {
     setSelectedBook(undefined);
     setEditDialogOpen(false);
   };
+
   return (
     <>
-      {selectedBook && <BookEditDialog isOpen={editDialogOpen} book={selectedBook} onClose={onCloseEditDialog} />}
+      {selectedBook && (
+        <BookEditDialog isOpen={editDialogOpen} initialBook={selectedBook} onClose={onCloseEditDialog} />
+      )}
       <DeleteDialog
         isOpen={deleteDialogOpen}
         title="Delete book"

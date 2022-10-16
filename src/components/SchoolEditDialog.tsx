@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import useSchoolsApi, { School, SCHOOLS } from '../api/schools';
+import { HttpResponse } from '../api/types';
 import DialogBase from './DialogBase';
 
 const SchoolEditDialog: React.FC<{
@@ -11,16 +12,21 @@ const SchoolEditDialog: React.FC<{
   onClose: () => any;
 }> = ({ isOpen, school, onClose }) => {
   const [name, setName] = useState('');
+  const [error, setError] = useState<string>();
+
+  const onSuccess = (data: HttpResponse) => {
+    if (data.error) {
+      setError(error);
+      return;
+    }
+    queryClient.invalidateQueries([SCHOOLS]);
+    onClose();
+  };
+
   const { addSchool, updateSchool } = useSchoolsApi();
   const queryClient = useQueryClient();
-
-  const { mutate: add } = useMutation(addSchool, {
-    onSuccess: () => queryClient.invalidateQueries([SCHOOLS])
-  });
-
-  const { mutate: update } = useMutation(updateSchool, {
-    onSuccess: () => queryClient.invalidateQueries([SCHOOLS])
-  });
+  const { mutate: add } = useMutation(addSchool, { onSuccess });
+  const { mutate: update } = useMutation(updateSchool, { onSuccess });
 
   useEffect(() => {
     setName(school?.name);
@@ -38,6 +44,7 @@ const SchoolEditDialog: React.FC<{
 
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title="Enter school name">
+      {error && <p className="text-red">{error}</p>}
       <form onSubmit={onSave}>
         <input className="input w-full" type="text" value={name} onChange={e => setName(e.target.value)} />
         <div className="flex justify-between">
