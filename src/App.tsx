@@ -18,7 +18,7 @@ function App() {
       <Route path="/" element={<Layout currentUser={data?.user} />}>
         <Route path="schools" element={<Schools currentUser={data?.user} />} />
         <Route path="books" element={<Books currentUser={data?.user} />} />
-        <Route path="storages" element={<Storages />} />
+        <Route path="storages" element={<Storages currentUser={data?.user} />} />
         <Route path="classes" element={<Classes />} />
         <Route path="users">
           <Route index element={<Users />} />
