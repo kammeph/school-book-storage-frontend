@@ -16,16 +16,22 @@ const SchoolClasses: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
   const queryClient = useQueryClient();
   const { data } = useQuery([SCHOOL_CLASSES], getSchoolClasses);
   const { mutate: deleteSelectedSchoolClass } = useMutation(deleteSchoolClass, {
-    onSuccess: () => queryClient.invalidateQueries([SCHOOL_CLASSES])
+    onSuccess: () => {
+      queryClient.invalidateQueries([SCHOOL_CLASSES]);
+      setSelectedSchoolClass(undefined);
+    }
   });
+
   const onOpenEditDialog = (schoolClass: SchoolClass) => {
     setSelectedSchoolClass(schoolClass);
     setEditDialogOpen(true);
   };
+
   const onCloseEditDialog = () => {
     setSelectedSchoolClass(undefined);
     setEditDialogOpen(false);
   };
+
   return (
     <>
       {selectedSchoolClass && (
@@ -38,7 +44,7 @@ const SchoolClasses: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
       <DeleteDialog
         isOpen={deleteDialogOpen}
         title="Delete schoolClass"
-        message="Are you sure that you want to delete the selected schoolClass?"
+        message="Are you sure that you want to delete the selected school class?"
         onDelete={() => {
           selectedSchoolClass?.id && deleteSelectedSchoolClass(selectedSchoolClass?.id);
           setDeleteDialogOpen(false);

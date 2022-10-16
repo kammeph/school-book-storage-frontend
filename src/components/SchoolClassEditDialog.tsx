@@ -11,7 +11,6 @@ const SchoolClassEditDialog: React.FC<{ isOpen: boolean; initialSchoolClass: Sch
   initialSchoolClass: initialSchoolClass,
   onClose
 }) => {
-  console.log(typeof initialSchoolClass.dateFrom);
   const [schoolClass, setSchoolClass] = useState(initialSchoolClass);
   const [error, setError] = useState<string>();
   const canSave = useCallback(

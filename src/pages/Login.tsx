@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuthApi, { ACCESS_TOKEN } from '../api/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -11,7 +11,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as any)?.from?.pathname || '/books';
-  
+
   const formInvalid = useCallback(() => {
     return !username || !password;
   }, [username, password]);
@@ -25,7 +25,7 @@ function Login() {
     }
   });
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     loginUser({ username, password });
   };

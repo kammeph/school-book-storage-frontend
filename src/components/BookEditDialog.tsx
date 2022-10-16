@@ -6,14 +6,19 @@ import useBooksApi, { Book, BOOKS, Subject } from '../api/books';
 import { HttpResponse } from '../api/types';
 import DialogBase from './DialogBase';
 import PrimitiveSelect from './PrimitiveSelect';
+
 const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-const BookEditDialog: React.FC<{ isOpen: boolean; book: Book; onClose: () => any }> = ({ isOpen, book, onClose }) => {
-  const [editBook, setEditBook] = useState(book);
+const BookEditDialog: React.FC<{ isOpen: boolean; initialBook: Book; onClose: () => any }> = ({
+  isOpen,
+  initialBook,
+  onClose
+}) => {
+  const [book, setBook] = useState(initialBook);
   const [error, setError] = useState<string>();
   const canSave = useCallback(
-    () => !!editBook.isbn && !!editBook.name && !!editBook.subject && editBook.grades?.length > 0,
-    [editBook.isbn, editBook.name, editBook.subject, editBook.grades?.length]
+    () => !!book.isbn && !!book.name && !!book.subject && book.grades?.length > 0,
+    [book.isbn, book.name, book.subject, book.grades?.length]
   );
   const onSuccess = (data: HttpResponse) => {
     if (data.error) {
@@ -31,10 +36,10 @@ const BookEditDialog: React.FC<{ isOpen: boolean; book: Book; onClose: () => any
 
   const onSave = (e: FormEvent) => {
     e.preventDefault();
-    if (book?.id) {
-      update(editBook);
+    if (initialBook?.id) {
+      update(book);
     } else {
-      add(editBook);
+      add(book);
     }
   };
   return (
@@ -46,8 +51,8 @@ const BookEditDialog: React.FC<{ isOpen: boolean; book: Book; onClose: () => any
           id="isbn"
           className="input w-full"
           type="text"
-          value={editBook.isbn}
-          onChange={e => setEditBook({ ...editBook, isbn: e.target.value })}
+          value={book.isbn}
+          onChange={e => setBook({ ...book, isbn: e.target.value })}
         />
 
         <label htmlFor="name">Name</label>
@@ -55,39 +60,39 @@ const BookEditDialog: React.FC<{ isOpen: boolean; book: Book; onClose: () => any
           id="name"
           className="input w-full"
           type="text"
-          value={editBook.name}
-          onChange={e => setEditBook({ ...editBook, name: e.target.value })}
+          value={book.name}
+          onChange={e => setBook({ ...book, name: e.target.value })}
         />
 
         <label htmlFor="description">Description</label>
         <textarea
           id="description"
           className="input w-full"
-          value={editBook.description ?? ''}
-          onChange={e => setEditBook({ ...editBook, description: e.target.value })}
+          value={book.description ?? ''}
+          onChange={e => setBook({ ...book, description: e.target.value })}
         />
 
         <label>Grades</label>
         <PrimitiveSelect
-          value={editBook?.grades}
+          value={book?.grades}
           options={grades}
           multiple={true}
-          onChange={grades => setEditBook({ ...editBook, grades })}
+          onChange={grades => setBook({ ...book, grades })}
         />
 
         <label>Price</label>
         <input
           className="input w-full"
           type="number"
-          value={editBook.price ?? 0.0}
-          onChange={e => setEditBook({ ...editBook, price: Number(e.target.value) })}
+          value={book.price ?? 0.0}
+          onChange={e => setBook({ ...book, price: Number(e.target.value) })}
         />
 
         <label>Subject</label>
         <PrimitiveSelect
-          value={editBook.subject}
+          value={book.subject}
           options={Object.values(Subject)}
-          onChange={subject => setEditBook({ ...editBook, subject })}
+          onChange={subject => setBook({ ...book, subject })}
         />
 
         <div className="flex justify-between">

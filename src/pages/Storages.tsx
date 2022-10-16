@@ -16,16 +16,22 @@ const Storages: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
   const queryClient = useQueryClient();
   const { data } = useQuery([STORAGES], getStorages);
   const { mutate: deleteSelectedStorage } = useMutation(deleteStorage, {
-    onSuccess: () => queryClient.invalidateQueries([STORAGES])
+    onSuccess: () => {
+      queryClient.invalidateQueries([STORAGES]);
+      setSelectedStorage(undefined);
+    }
   });
+
   const onOpenEditDialog = (storage: Storage) => {
     setSelectedStorage(storage);
     setEditDialogOpen(true);
   };
+
   const onCloseEditDialog = () => {
     setSelectedStorage(undefined);
     setEditDialogOpen(false);
   };
+
   return (
     <>
       {selectedStorage && (
