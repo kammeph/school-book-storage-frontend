@@ -6,7 +6,6 @@ import Books from './pages/Books';
 import SchoolClasses from './pages/SchoolClasses';
 import Schools from './pages/Schools';
 import Storages from './pages/Storages';
-import UserEdit from './pages/User';
 import Users from './pages/Users';
 
 function App() {
@@ -20,10 +19,7 @@ function App() {
         <Route path="books" element={<Books currentUser={data?.user} />} />
         <Route path="storages" element={<Storages currentUser={data?.user} />} />
         <Route path="classes" element={<SchoolClasses currentUser={data?.user} />} />
-        <Route path="users">
-          <Route index element={<Users />} />
-          <Route path=":id" element={<UserEdit currentUser={data?.user} />} />
-        </Route>
+        <Route path="users" element={<Users currentUser={data?.user} />} />
       </Route>
     </Routes>
   );

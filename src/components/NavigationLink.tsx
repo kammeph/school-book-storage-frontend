@@ -14,7 +14,7 @@ const NavigationLink: React.FC<{ userRoles?: Role[]; allowedRoles: Role[]; text?
     <li>
       <Link className="flex gap-1 items-center" to={to}>
         <FontAwesomeIcon icon={icon} />
-        <b className="invisible w-0 lg:w-auto lg:visible">{text}</b>
+        <b className="hidden lg:block">{text}</b>
       </Link>
     </li>
   ) : (
