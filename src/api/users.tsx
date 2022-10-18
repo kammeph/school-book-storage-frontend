@@ -34,12 +34,12 @@ const useUsersApi = () => {
   const fetchPrivate = useFetchPrivate();
 
   const getUsers = async (): Promise<UserHttpResponse> => {
-    return await fetchPrivate(`/users`, { method: HttpMethods.GET });
+    return await fetchPrivate(`/users/get-all`, { method: HttpMethods.GET });
   };
 
   const getUserById = async (id?: string): Promise<UserHttpResponse> => {
     if (!id) return { error: 'user id not specified' };
-    return await fetchPrivate(`/users/by-id?userId=${id}`, { method: HttpMethods.GET });
+    return await fetchPrivate(`/users/get-by-id?userId=${id}`, { method: HttpMethods.GET });
   };
 
   const getMe = async (): Promise<UserHttpResponse> => {
@@ -54,7 +54,11 @@ const useUsersApi = () => {
     return await fetchPrivate(`/users/delete?id=${id}`, { method: HttpMethods.POST });
   };
 
-  return { getUsers, getUserById, getMe, updateUser, deleteUser };
+  const changePassword = async (changes: { oldPassword: string; newPassword: string }): Promise<HttpResponse> => {
+    return await fetchPrivate(`/users/change-password`, { method: HttpMethods.POST, body: JSON.stringify(changes) });
+  };
+
+  return { getUsers, getUserById, getMe, updateUser, deleteUser, changePassword };
 };
 
 export default useUsersApi;

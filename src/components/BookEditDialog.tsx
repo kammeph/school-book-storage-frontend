@@ -22,7 +22,7 @@ const BookEditDialog: React.FC<{ isOpen: boolean; initialBook: Book; onClose: ()
   );
   const onSuccess = (data: HttpResponse) => {
     if (data.error) {
-      setError(error);
+      setError(data.error);
       return;
     }
     queryClient.invalidateQueries([BOOKS]);
@@ -44,7 +44,7 @@ const BookEditDialog: React.FC<{ isOpen: boolean; initialBook: Book; onClose: ()
   };
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title="Enter book data">
-      {error && <p className="text-red">{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={onSave}>
         <label htmlFor="isbn">ISBN</label>
         <input

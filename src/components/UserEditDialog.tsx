@@ -19,7 +19,7 @@ const UserEditDialog: React.FC<{ isOpen: boolean; initialUser: User; currentUser
   const [error, setError] = useState<string>();
   const onSuccess = (data: HttpResponse) => {
     if (data.error) {
-      setError(error);
+      setError(data.error);
       return;
     }
     queryClient.invalidateQueries([USERS]);
@@ -39,7 +39,7 @@ const UserEditDialog: React.FC<{ isOpen: boolean; initialUser: User; currentUser
   };
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title="Enter user data">
-      {error && <p className="text-red">{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={onSave}>
         <label htmlFor="name">Username</label>
         <input

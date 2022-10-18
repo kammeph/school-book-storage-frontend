@@ -24,7 +24,7 @@ const SchoolClassEditDialog: React.FC<{ isOpen: boolean; initialSchoolClass: Sch
   );
   const onSuccess = (data: HttpResponse) => {
     if (data.error) {
-      setError(error);
+      setError(data.error);
       return;
     }
     queryClient.invalidateQueries([SCHOOL_CLASSES]);
@@ -55,7 +55,7 @@ const SchoolClassEditDialog: React.FC<{ isOpen: boolean; initialSchoolClass: Sch
 
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title="Enter school class data">
-      {error && <p className="text-red">{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={onSave}>
         <label htmlFor="grade">Name</label>
         <input
