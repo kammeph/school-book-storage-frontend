@@ -16,7 +16,7 @@ const StorageEditDialog: React.FC<{ isOpen: boolean; initialStorage: Storage; on
   const canSave = useCallback(() => !!storage.name && !!storage.location, [storage.name, storage.location]);
   const onSuccess = (data: HttpResponse) => {
     if (data.error) {
-      setError(error);
+      setError(data.error);
       return;
     }
     queryClient.invalidateQueries([STORAGES]);
@@ -38,7 +38,7 @@ const StorageEditDialog: React.FC<{ isOpen: boolean; initialStorage: Storage; on
   };
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title="Enter storage data">
-      {error && <p className="text-red">{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={onSave}>
         <label htmlFor="name">Name</label>
         <input

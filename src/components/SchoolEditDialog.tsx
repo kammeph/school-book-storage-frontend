@@ -1,7 +1,7 @@
 import { faCancel, faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSchoolsApi, { School, SCHOOLS } from '../api/schools';
 import { HttpResponse } from '../api/types';
 import DialogBase from './DialogBase';
@@ -11,12 +11,12 @@ const SchoolEditDialog: React.FC<{
   school: School;
   onClose: () => any;
 }> = ({ isOpen, school, onClose }) => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(school.name);
   const [error, setError] = useState<string>();
 
   const onSuccess = (data: HttpResponse) => {
     if (data.error) {
-      setError(error);
+      setError(data.error);
       return;
     }
     queryClient.invalidateQueries([SCHOOLS]);
@@ -28,10 +28,6 @@ const SchoolEditDialog: React.FC<{
   const { mutate: add } = useMutation(addSchool, { onSuccess });
   const { mutate: update } = useMutation(updateSchool, { onSuccess });
 
-  useEffect(() => {
-    setName(school?.name);
-  }, [school.id]);
-
   const onSave = (e: any) => {
     e.preventDefault();
     if (school?.id) {
@@ -39,12 +35,11 @@ const SchoolEditDialog: React.FC<{
     } else {
       add(name);
     }
-    onClose();
   };
 
   return (
     <DialogBase isOpen={isOpen} onClose={onClose} title="Enter school name">
-      {error && <p className="text-red">{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={onSave}>
         <input className="input w-full" type="text" value={name} onChange={e => setName(e.target.value)} />
         <div className="flex justify-between">

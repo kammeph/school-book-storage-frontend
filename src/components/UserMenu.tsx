@@ -6,10 +6,12 @@ import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthApi from '../api/auth';
 import { User } from '../api/users';
+import ChangePasswordDialog from './ChangePasswordDialog';
 import UserEditDialog from './UserEditDialog';
 
 const UserMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [changePasswordDialogOpen, setChangePasswordDialogOpen] = useState(false);
   const { logout } = useAuthApi();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ const UserMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
           onClose={() => setEditDialogOpen(false)}
         />
       )}
+      <ChangePasswordDialog isOpen={changePasswordDialogOpen} onClose={() => setChangePasswordDialogOpen(false)} />
       <Menu as="div" className="relative inline-block text-left">
         <div className="">
           <Menu.Button className="inline-flex gap-1 items-center w-full justify-center rounded-md py-2 text-white focus:outline-none">
@@ -67,6 +70,7 @@ const UserMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={() => setChangePasswordDialogOpen(true)}
                     className={`${
                       active ? 'bg-indigo-100 text-indigo-800' : 'text-gray-900'
                     } flex gap-3 w-full items-center rounded-md px-2 py-2`}
