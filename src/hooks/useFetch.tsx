@@ -1,5 +1,5 @@
 // export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-export const BASE_URL = 'https://school-book-storage-service-c4un754gva-uc.a.run.app/api';
+export const BASE_URL = 'https://sbs-api.kammererphilipp.de/api';
 
 export const HttpMethods = {
   GET: 'GET',
