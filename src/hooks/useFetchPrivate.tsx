@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuthApi, { ACCESS_TOKEN } from '../api/auth';
 
-export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const BASE_URL = 'https://school-book-storage-service-c4un754gva-uc.a.run.app/api';
 
 const useFetchPrivate = () => {
   const navigate = useNavigate();
