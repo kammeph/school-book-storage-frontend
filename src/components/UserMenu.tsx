@@ -11,6 +11,7 @@ import UserEditDialog from './UserEditDialog';
 
 const UserMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [menuOpensAbove, setMenuOpensAbove] = useState(false);
   const [changePasswordDialogOpen, setChangePasswordDialogOpen] = useState(false);
   const { logout } = useAuthApi();
   const queryClient = useQueryClient();
@@ -38,7 +39,12 @@ const UserMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
       <ChangePasswordDialog isOpen={changePasswordDialogOpen} onClose={() => setChangePasswordDialogOpen(false)} />
       <Menu as="div" className="relative inline-block text-left">
         <div className="">
-          <Menu.Button className="inline-flex gap-1 items-center w-full justify-center rounded-md py-2 text-white focus:outline-none">
+          <Menu.Button
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+              setMenuOpensAbove(e.clientY > 0.75 * window.screen.height)
+            }
+            className="inline-flex gap-1 items-center w-full justify-center rounded-md py-2 text-white focus:outline-none"
+          >
             <FontAwesomeIcon icon={faUser} />
             <b className="hidden lg:block">{currentUser?.username}</b>
           </Menu.Button>
@@ -52,7 +58,11 @@ const UserMenu: React.FC<{ currentUser?: User }> = ({ currentUser }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mb-2 bottom-full w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:bottom-auto lg:mb-0 lg:mt-2">
+          <Menu.Items
+            className={`${
+              menuOpensAbove ? 'mb-2 bottom-full' : 'mb-0 mt-2'
+            } absolute right-0  w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:bottom-auto `}
+          >
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (

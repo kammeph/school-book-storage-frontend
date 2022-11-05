@@ -47,6 +47,7 @@ const ChangePasswordDialog: React.FC<{
       <form onSubmit={onSave}>
         <label htmlFor="oldPassword">Old password</label>
         <input
+          required
           id="oldPassword"
           className="input w-full"
           type="password"
