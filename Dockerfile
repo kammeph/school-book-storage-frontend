@@ -21,4 +21,13 @@ RUN rm -rf ./*
 COPY --from=build app/dist .
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# start script
+WORKDIR /app
+
+# copy start script for replacing the environment variables
+COPY nginx/start-nginx.sh ./start-nginx.sh
+
+RUN chmod +x ./start-nginx.sh
+
+# When Container Start -> Replace Environment Variables
+CMD [ "/bin/sh", "-c", "sh start-nginx.sh" ]

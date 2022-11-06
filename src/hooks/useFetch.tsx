@@ -1,5 +1,6 @@
-// export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-export const BASE_URL = 'https://sbs-api.kammererphilipp.de/api';
+import { env } from '../environments/env';
+
+const API_BASE_URL = env.API_BASE_URL;
 
 export const HttpMethods = {
   GET: 'GET',
@@ -8,7 +9,7 @@ export const HttpMethods = {
 
 const useFetch = () => {
   const fetchData = async (url: string, init?: RequestInit) => {
-    const response = await fetch(`${BASE_URL}${url}`, {
+    const response = await fetch(`${API_BASE_URL}${url}`, {
       credentials: 'include',
       ...init,
       headers: {

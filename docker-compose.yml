@@ -2,7 +2,6 @@ version: '3.9'
 
 services:
   app:
-    # image: kammeph/school-book-storage-frontend:${APP_VERSION}
     build: .
     container_name: school-book-storage-frontend
     hostname: school-book-storage-frontend
@@ -10,3 +9,5 @@ services:
     restart: always
     ports:
       - ${APP_PORT}:80
+    environment:
+      API_BASE_URL: ${API_BASE_URL}
